@@ -20,6 +20,7 @@ protected:
     bool doRepaint;
     void closeEvent(QCloseEvent *event);
     void paintEvent(QPaintEvent *);
+    void resizeEvent(QResizeEvent *);
     void keyPressEvent(QKeyEvent *);
     void keyReleaseEvent(QKeyEvent *);
     game_button_state *getButtonStateFromQtKey(int qtKey);

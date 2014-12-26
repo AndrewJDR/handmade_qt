@@ -114,15 +114,34 @@ void HandmadeQt::keyReleaseEvent(QKeyEvent *keyEvent)
 
 void HandmadeQt::paintEvent(QPaintEvent *paintEvent) {
     if( doPainting ) {
+        qreal xOffset = 10.0;
+        qreal yOffset = 10.0;
+        qreal imgWidth = (qreal)qImgBuffer->width();
+        qreal imgHeight = (qreal)qImgBuffer->height();
+
         QPainter painter(this);
-        QRectF rect(0.0, 0.0, (qreal)qImgBuffer->width(), (qreal)qImgBuffer->height());
-        painter.drawImage(rect, *qImgBuffer, rect);
+        QRectF srcRect(0.0, 0.0, imgWidth, imgHeight);
+        QRectF dstRect(xOffset, yOffset, imgWidth, imgHeight);
+
+        painter.drawImage(dstRect, *qImgBuffer, srcRect);
+
+        painter.fillRect(0.0, 0.0, width(), yOffset, Qt::black);
+        painter.fillRect(0.0, 0.0, xOffset, height(), Qt::black);
+        painter.fillRect(imgWidth + xOffset, 0.0, width() - imgWidth - xOffset, height(), Qt::black);
+        painter.fillRect(0.0, imgHeight + yOffset, width(), height() - imgHeight - yOffset, Qt::black);
     }
 }
 
+
 void HandmadeQt::forceRepaint() {
     doPainting = true;
-    repaint(QRect(0.0, 0.0, (qreal)qImgBuffer->width(), (qreal)qImgBuffer->height()));
+    repaint(QRect(0.0, 0.0, width(), height()));
+    doPainting = false;
+}
+
+void HandmadeQt::resizeEvent(QResizeEvent *resizeEvent) {
+    doPainting = true;
+    repaint(QRect(0.0, 0.0, width(), height()));
     doPainting = false;
 }
 
@@ -138,21 +157,22 @@ DEBUG_PLATFORM_WRITE_ENTIRE_FILE(DEBUGPlatformWriteEntireFile) {
 
 int main(int argc, char *argv[])
 {
+    int useWidth = 960, useHeight=540;
     QApplication a(argc, argv);
     HandmadeQt w;
-    w.setGeometry(50, 50, 1280, 720);
+    w.setGeometry(50, 50, useWidth, useHeight);
 
     w.show();
 
     int MonitorRefreshHz = (int)a.primaryScreen()->refreshRate();
-    printf("%i\n", MonitorRefreshHz);
+    //printf("%i\n", MonitorRefreshHz);
     if(MonitorRefreshHz <= 1) {
         MonitorRefreshHz = 60;
     }
     real32 GameUpdateHz = (MonitorRefreshHz / 2.0f);
     real32 TargetSecondsPerFrame = 1.0f / (real32)GameUpdateHz;
 
-    qImgBuffer = new QImage(1280, 720, QImage::Format_RGBX8888);
+    qImgBuffer = new QImage(useWidth, useHeight, QImage::Format_RGB32);
 
     game_memory GameMemory = {};
     GameMemory.PermanentStorageSize = Megabytes(64);
@@ -175,6 +195,7 @@ int main(int argc, char *argv[])
     QElapsedTimer frameTimer;
     frameTimer.start();
     while(GlobalRunning) {
+        NewInput->dtForFrame = TargetSecondsPerFrame;
         w.OldKeyboardController = GetController(OldInput, 0);
         w.NewKeyboardController = GetController(NewInput, 0);
         *w.NewKeyboardController = {};
