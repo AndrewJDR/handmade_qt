@@ -158,7 +158,7 @@ int main(int argc, char *argv[])
     int useWidth = 960, useHeight=540;
     QApplication a(argc, argv);
     HandmadeQt w;
-    w.setGeometry(50, 50, useWidth, useHeight);
+    w.setGeometry(50, 50, 1280, 720);
 
     w.show();
 
