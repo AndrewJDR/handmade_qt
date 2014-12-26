@@ -17,3 +17,6 @@ it should build fine. I used day 25/26 sources.
 
 Also -- to run the build, you may need to copy your handmade.dll into the same
 directory as the handmade_qt.exe
+
+I've only tested this on Windows, but I'm not using any exotic Qt features, so 
+it might just work on any of the [platforms Qt runs on](http://doc.qt.io/qt-5/supported-platforms.html)
