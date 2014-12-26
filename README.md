@@ -16,13 +16,14 @@ What's in:
 
 I'd prefer to keep this a pure Qt layer without any other deps or platform specific code, so there's some things I probably won't do:
 * Gamepads (No gamepad support in Qt)
-* Hot reloading/replay (No LoadLibrary/etc abstraction in Qt)
+
 
 For the future:
 * I want to make use of Qt's hardware acceleration features so I can see how much of a difference it makes. For the time being, I went out of my way to do things in naive, software based way with QImage/QPainter to see just how bad the performance is.
 * Qt does seem to have some [low-level sound support](http://doc.qt.io/qt-5/qaudiooutput.html), so I'll probably look
 at doing that at some point soon.
 * Qt is on a ton of platforms, including some obscure embeded ones, so that could also be interesting to try out down the road.
+* Hot reloading/replay using QLibrary
 
 Building
 -------------
