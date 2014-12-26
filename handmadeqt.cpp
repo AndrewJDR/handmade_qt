@@ -140,9 +140,7 @@ void HandmadeQt::forceRepaint() {
 }
 
 void HandmadeQt::resizeEvent(QResizeEvent *resizeEvent) {
-    doPainting = true;
-    repaint(QRect(0.0, 0.0, width(), height()));
-    doPainting = false;
+    forceRepaint();
 }
 
 DEBUG_PLATFORM_FREE_FILE_MEMORY(DEBUGPlatformFreeFileMemory) { }
