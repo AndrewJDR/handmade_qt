@@ -31,7 +31,7 @@ subdirectory and make sure it's built. You'll also need Qt -- I used Qt 5.4.0
 but could probably get away with an older version.
 You can open the .pro file in Qt Creator and build the project.
 Assuming you've placed your built HMH source code in the correct subdirectory,
-it should compile fine. I used day 25/26 sources.
+it should compile fine. I used the day 29 sources.
 
 To run the build, you may need to copy your handmade.dll into the same
 directory as the handmade_qt.exe
