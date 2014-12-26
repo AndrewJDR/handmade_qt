@@ -182,7 +182,7 @@ int main(int argc, char *argv[])
         for(int ButtonIndex = 0; ButtonIndex < ArrayCount(w.NewKeyboardController->Buttons); ++ButtonIndex) {
             w.NewKeyboardController->Buttons[ButtonIndex].EndedDown = w.OldKeyboardController->Buttons[ButtonIndex].EndedDown;
         }
-        QCoreApplication::processEvents(QEventLoop::AllEvents, 5);
+        QCoreApplication::processEvents(QEventLoop::AllEvents, 1);
 
         if(!GlobalPause) {
             thread_context Thread = {};
@@ -195,9 +195,6 @@ int main(int argc, char *argv[])
             Buffer.BytesPerPixel = qImgBuffer->depth() / 8;
 
             GameUpdateAndRender(&Thread, &GameMemory, NewInput, &Buffer);
-            game_input *Temp = NewInput;
-            NewInput = OldInput;
-            OldInput = Temp;
 
             w.forceRepaint();
 
@@ -216,5 +213,9 @@ int main(int argc, char *argv[])
             frameTimer.restart();
             //qDebug( "MSPerFrame: %f\n", MSPerFrame );
         }
+
+        game_input *Temp = NewInput;
+        NewInput = OldInput;
+        OldInput = Temp;
     }
 }
